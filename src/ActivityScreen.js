@@ -47,17 +47,16 @@ function ActivityScreen({ navigation }) {
             titleStyle={styles.buttonText}
           />
         </View>
-        
+
         <View style={styles.buttonWrapper}>
           <Button
             title="Crossword"
-            onPress={() => navigation.navigate("crossword")}
+            onPress={() => navigation.navigate("Crossword")}
             buttonStyle={{ ...styles.button, backgroundColor: "#66BB6A" }}
             icon={<Icon name="casino" type="material" color="#ffffff" />}
             titleStyle={styles.buttonText}
           />
         </View>
-      
       </View>
     </ScrollView>
   );
@@ -80,13 +79,13 @@ const styles = StyleSheet.create({
     textShadowColor: "#000",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 5,
-    flex:1,
-    justifyContent:'flex-start'
+    flex: 1,
+    justifyContent: "flex-start",
   },
   buttonsContainer: {
     backgroundColor: "#FFFFFF", // Pure white for a clean, modern look
     borderRadius: 20,
-    flex:5,
+    flex: 5,
     padding: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },

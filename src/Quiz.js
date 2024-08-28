@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, Image, Pressable, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import axios from "axios";
-import { Audio } from 'expo-av';
-import * as Progress from 'react-native-progress'; // Import the progress bar component
+import { Audio } from "expo-av";
+import * as Progress from "react-native-progress"; // Import the progress bar component
 
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -20,16 +27,16 @@ const Quiz = () => {
   const [hasBeenAwardedBadge, setHasBeenAwardedBadge] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false); // New state to track quiz completion
   const [difficulty, setDifficulty] = useState(null); // State for difficulty level
- 
-  
+
   const fetchData = useCallback(() => {
     console.log("Fetching data from API...");
-    axios.get("https://learnirula.azurewebsites.net/api/")
+    axios
+      .get("https://learnirula.azurewebsites.net/api/")
       .then((response) => {
         const newData = response.data.sort(() => Math.random() - 0.5);
         setData(newData);
         setLoading(false);
-        setImageUri(newData[0]?.picturePath);
+        setImageUri(newData[0]?.picturePath); //where the new image is coming from the API
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -54,7 +61,7 @@ const Quiz = () => {
     }
 
     const interval = setInterval(() => {
-      setTimer(prevTimer => prevTimer > 0 ? prevTimer - 1 : 0);
+      setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -82,10 +89,12 @@ const Quiz = () => {
 
     const question = `Question ${currentQuestion}: What is in the image?`;
     setQuestionText(question);
-    const currentOptions = data.slice(currentQuestion - 1, currentQuestion + 3).map(item => ({
-      text: translateToTamil ? item.taWord : item.enWord,
-      audioPath: item.audioPath
-    }));
+    const currentOptions = data
+      .slice(currentQuestion - 1, currentQuestion + 3)
+      .map((item) => ({
+        text: translateToTamil ? item.taWord : item.enWord,
+        audioPath: item.audioPath,
+      }));
     setOptions(shuffleOptions(currentOptions));
     setImageUri(data[currentQuestion - 1]?.picturePath);
     setIsSubmitted(false);
@@ -107,7 +116,9 @@ const Quiz = () => {
 
   const handleSubmit = () => {
     if (!isSubmitted && selectedOption) {
-      const correctAnswer = translateToTamil ? data[currentQuestion - 1].taWord : data[currentQuestion - 1].enWord;
+      const correctAnswer = translateToTamil
+        ? data[currentQuestion - 1].taWord
+        : data[currentQuestion - 1].enWord;
       if (selectedOption.text === correctAnswer) {
         const newPoints = points + 10;
         setPoints(newPoints);
@@ -155,13 +166,22 @@ const Quiz = () => {
   const renderDifficultySelection = () => (
     <View style={styles.difficultyContainer}>
       <Text style={styles.difficultyHeader}>Select Difficulty Level</Text>
-      <Pressable onPress={() => handleDifficultySelection("easy")} style={styles.difficultyButton}>
+      <Pressable
+        onPress={() => handleDifficultySelection("easy")}
+        style={styles.difficultyButton}
+      >
         <Text style={styles.difficultyButtonText}>Easy</Text>
       </Pressable>
-      <Pressable onPress={() => handleDifficultySelection("medium")} style={styles.difficultyButton}>
+      <Pressable
+        onPress={() => handleDifficultySelection("medium")}
+        style={styles.difficultyButton}
+      >
         <Text style={styles.difficultyButtonText}>Medium</Text>
       </Pressable>
-      <Pressable onPress={() => handleDifficultySelection("hard")} style={styles.difficultyButton}>
+      <Pressable
+        onPress={() => handleDifficultySelection("hard")}
+        style={styles.difficultyButton}
+      >
         <Text style={styles.difficultyButtonText}>Hard</Text>
       </Pressable>
     </View>
@@ -182,30 +202,51 @@ const Quiz = () => {
           </Pressable>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <View style={styles.quizContainer}>
             {hasBeenAwardedBadge && (
               <View style={styles.badgeContainer}>
-                <Text style={styles.badgeText}>🏆 Achievement Unlocked: 50 Points!</Text>
+                <Text style={styles.badgeText}>
+                  🏆 Achievement Unlocked: 50 Points!
+                </Text>
               </View>
             )}
             <View style={styles.header}>
-              <Pressable onPress={toggleLanguage} style={styles.languageToggleButton}>
+              <Pressable
+                onPress={toggleLanguage}
+                style={styles.languageToggleButton}
+              >
                 <Text style={styles.languageToggleButtonText}>
-                  {translateToTamil ? "Translate to English" : "Translate to Tamil"}
+                  {translateToTamil
+                    ? "Translate to English"
+                    : "Translate to Tamil"}
                 </Text>
               </Pressable>
               <Text style={styles.pointsText}>Points: {points}</Text>
             </View>
 
-             <View style={styles.progressBarContainer}>
-                <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
-             </View>
-              
-            
-            <Text style={styles.quizHeader}>{`Question ${currentQuestion}/10`}</Text>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBarFill,
+                  { width: `${progress * 100}%` },
+                ]}
+              />
+            </View>
+
+            <Text
+              style={styles.quizHeader}
+            >{`Question ${currentQuestion}/10`}</Text>
             <Text style={styles.timerText}>{`Time left: ${timer}s`}</Text>
-            <Text style={styles.questionText}>{translateToTamil ? `கேள்வி ${currentQuestion}: படத்தில் என்ன உள்ளது?` : questionText}</Text>
+            <Text style={styles.questionText}>
+              {translateToTamil
+                ? `கேள்வி ${currentQuestion}: படத்தில் என்ன உள்ளது?`
+                : questionText}
+            </Text>
             <View style={styles.imageContainer}>
               <Image source={{ uri: imageUri }} style={styles.questionImage} />
             </View>
@@ -213,7 +254,10 @@ const Quiz = () => {
               <Pressable
                 key={index}
                 onPress={() => handleOptionPress(option)}
-                style={[styles.optionButton, selectedOption === option ? styles.selectedOption : null]}
+                style={[
+                  styles.optionButton,
+                  selectedOption === option ? styles.selectedOption : null,
+                ]}
               >
                 <Text style={styles.optionButtonText}>{option.text}</Text>
               </Pressable>
@@ -257,10 +301,12 @@ const styles = StyleSheet.create({
   },
   difficultyButton: {
     backgroundColor: "#4CAF50",
+    width: 150, //change the size of the button
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
     marginBottom: 15,
+    alignItems: "center", //center the content horizontally
   },
   difficultyButtonText: {
     fontSize: 20,
@@ -298,15 +344,15 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     height: 20,
-    width: '100%',
-    backgroundColor: '#e0e0e0',
+    width: "100%",
+    backgroundColor: "#e0e0e0",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginVertical: 15,
   },
   progressBarFill: {
-    height: '100%',
-    backgroundColor: '#32CD32',
+    height: "100%",
+    backgroundColor: "#32CD32",
     borderRadius: 10,
   },
   quizHeader: {
@@ -410,6 +456,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
 
 export default Quiz;

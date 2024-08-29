@@ -22,7 +22,7 @@ const ActivityStackNavigator = () => {
       <Stack.Screen name="Quiz" component={Quiz} />
       <Stack.Screen name="SCLearn" component={SCLearn} />
       <Stack.Screen name="SpinWheel" component={SpinWheel} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Crossword"
         component={Crossword}
         initialParams={{
@@ -34,7 +34,8 @@ const ActivityStackNavigator = () => {
             ["", "", "", "", "E"],
           ],
         }}
-      />
+      /> */}
+      <Stack.Screen name="Crossword" component={Crossword} />
     </Stack.Navigator>
   );
 };

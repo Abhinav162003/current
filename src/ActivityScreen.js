@@ -52,8 +52,8 @@ function ActivityScreen({ navigation }) {
           <Button
             title="Crossword"
             onPress={() => navigation.navigate("Crossword")}
-            buttonStyle={{ ...styles.button, backgroundColor: "#66BB6A" }}
-            icon={<Icon name="casino" type="material" color="#ffffff" />}
+            buttonStyle={{ ...styles.button, backgroundColor: "#800080" }}
+            icon={<Icon name="grid-on" type="material" color="#ffffff" />}
             titleStyle={styles.buttonText}
           />
         </View>

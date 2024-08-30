@@ -71,13 +71,13 @@ const cellSize = (width - 40) / 7; // Adjusted for padding (40 is the total hori
 const Crossword = ({ route }) => {
   // Updated grid with hidden words
   const defaultGrid = [
+    ["1", "", "", "", "2", "", ""],
     ["", "", "", "", "", "", ""],
+    ["3", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
+    ["5", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", ""],
+    ["7", "", "", "", "", "", ""],
   ];
 
   // Correct answers for validation
@@ -99,17 +99,17 @@ const Crossword = ({ route }) => {
       "7. A small, purple or green fruit (5 letters)",
     ],
     down: [
-      "1. A red or green fruit (5 letters)",
-      "2. A type of tropical fruit (6 letters)",
-      "4. Often found in fruit salads (5 letters)",
-      "6. A small, sweet fruit (3 letters)",
+      //"1. A red or green fruit (5 letters)",
+      "2. A type of tropical fruit (7 letters)",
+      //"4. Often found in fruit salads (5 letters)",
+      //"6. A small, sweet fruit (3 letters)",
     ],
   };
 
   const { grid = defaultGrid, hints = defaultHints } = route.params || {};
 
   // Initialize input state
-  const [inputs, setInputs] = useState(grid.map((row) => row.map(() => "")));
+  const [inputs, setInputs] = useState(grid);
 
   const handleChange = (row, col, value) => {
     const newInputs = [...inputs];

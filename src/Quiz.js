@@ -43,23 +43,25 @@ const Quiz = () => {
   // };
   
   const handleDifficultySelection = (level) => {
-    if (level === "medium") {
       setDifficulty(level); 
-    } else {
-      alert("Under Construction"); // Display message for Easy and Hard
-    }
-  };
+  }
 
   const fetchData = useCallback(() => {
     console.log("Fetching data from API...");
     axios
       .get("https://learnirula.azurewebsites.net/api/")
       .then((response) => {
-        const newData = response.data.sort(() => Math.random() - 0.5);
-        console.log(response.data);
+        let newData = response.data.sort(() => Math.random() - 0.5);
+ 
         // const currData = newData.filter(ques=>{
-        //   return ques.difficulty === difficulty;
-        // })
+        //   return ques.difficulty === difficulty;s
+        // })\
+        if (difficulty==="easy"){
+          newData = newData.map(ques=>{
+            const {picturePath, ...rem} = ques;
+            return rem;
+          })
+        }
         setData(newData);
         setLoading(false);
         setImageUri(newData[0]?.picturePath); //where the new image is coming from the API
@@ -71,8 +73,10 @@ const Quiz = () => {
   }, [difficulty]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if(difficulty){
+      fetchData();
+    }
+  }, [difficulty]);
 
   useEffect(() => {
     if (data.length > 0 && !quizCompleted) {
@@ -215,10 +219,10 @@ const Quiz = () => {
 
   return (
     <View style={styles.container}>
-    {loading ? (
-      <Text style={styles.loadingText}>Loading...</Text>
-    ) : !difficulty ? (
+    {!difficulty ? (
       renderDifficultySelection()
+    ) :  loading? (
+      <Text style={styles.loadingText}>Loading...</Text>
     ) : quizCompleted ? (
       // ... quiz completed rendering
       <View style={styles.quizContainer}>
@@ -274,9 +278,11 @@ const Quiz = () => {
                 ? `கேள்வி ${currentQuestion}: படத்தில் என்ன உள்ளது?`
                 : questionText}
             </Text>
+            {imageUri && 
             <View style={styles.imageContainer}>
               <Image source={{ uri: imageUri }} style={styles.questionImage} />
             </View>
+            }
             {options.map((option, index) => (
               <Pressable
                 key={index}

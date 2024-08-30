@@ -27,13 +27,41 @@ const Quiz = () => {
   const [hasBeenAwardedBadge, setHasBeenAwardedBadge] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false); // New state to track quiz completion
   const [difficulty, setDifficulty] = useState(null); // State for difficulty level
+ 
+
+  // const handleDifficultySelection = (level) => {
+  //   if (level === "easy") {
+  //     // Show a blank page for easy difficulty
+  //     return <View style={styles.blankPage} />;
+  //   } else if (level === "medium") {
+  //     // Show the medium quiz
+  //     setDifficulty(level);
+  //     fetchData(); // Fetch data based on difficulty
+  //   } else {
+  //     alert("Hard difficulty is under construction");
+  //   }
+  // };
+  
+  const handleDifficultySelection = (level) => {
+      setDifficulty(level); 
+  }
 
   const fetchData = useCallback(() => {
     console.log("Fetching data from API...");
     axios
       .get("https://learnirula.azurewebsites.net/api/")
       .then((response) => {
-        const newData = response.data.sort(() => Math.random() - 0.5);
+        let newData = response.data.sort(() => Math.random() - 0.5);
+ 
+        // const currData = newData.filter(ques=>{
+        //   return ques.difficulty === difficulty;s
+        // })\
+        if (difficulty==="easy"){
+          newData = newData.map(ques=>{
+            const {picturePath, ...rem} = ques;
+            return rem;
+          })
+        }
         setData(newData);
         setLoading(false);
         setImageUri(newData[0]?.picturePath); //where the new image is coming from the API
@@ -42,11 +70,13 @@ const Quiz = () => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, []);
+  }, [difficulty]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if(difficulty){
+      fetchData();
+    }
+  }, [difficulty]);
 
   useEffect(() => {
     if (data.length > 0 && !quizCompleted) {
@@ -56,7 +86,7 @@ const Quiz = () => {
 
   useEffect(() => {
     if (timer === 0) {
-      handleSubmit(); // Automatically submit when timer expires
+      handleSubmit(true); // Automatically submit when timer expires
       return;
     }
 
@@ -114,34 +144,37 @@ const Quiz = () => {
     playSound(option.audioPath);
   };
 
-  const handleSubmit = () => {
-    if (!isSubmitted && selectedOption) {
-      const correctAnswer = translateToTamil
-        ? data[currentQuestion - 1].taWord
-        : data[currentQuestion - 1].enWord;
-      if (selectedOption.text === correctAnswer) {
-        const newPoints = points + 10;
-        setPoints(newPoints);
-        // Check if points have reached 50 and badge has not been awarded yet
-        if (newPoints >= 50 && !hasBeenAwardedBadge) {
-          setHasBeenAwardedBadge(true);
+  const handleSubmit = (privilaged = false) => {
+    if (!isSubmitted) { 
+        
+        // Check for correct answer only if an option is selected OR it's a privileged submission (timer ran out)
+        if (selectedOption || privilaged) {
+            const correctAnswer = translateToTamil ? data[currentQuestion - 1].taWord : data[currentQuestion - 1].enWord;
+            if (selectedOption && selectedOption.text === correctAnswer) {
+                const newPoints = points + 10;
+                setPoints(newPoints);
+                if (newPoints >= 50 && !hasBeenAwardedBadge) {
+                    setHasBeenAwardedBadge(true);
+                }
+            }
+        } else { // If no option selected and not privileged, do nothing
+            return; 
         }
-      }
-      setIsSubmitted(true); // Mark as submitted to prevent multiple submissions
 
-      setTimeout(() => {
-        if (currentQuestion < 10) {
-          setCurrentQuestion(currentQuestion + 1);
-          setIsSubmitted(false); // Reset for the next question
-          setSelectedOption(null); // Clear selection
-          setTimer(60); // Reset the timer for the next question
-        } else {
-          // Quiz completed
-          setQuizCompleted(true);
-        }
-      }, 500); // Delay to show selection
+        setIsSubmitted(true); 
+
+        setTimeout(() => {
+            if (currentQuestion < 10) {
+                setCurrentQuestion(currentQuestion + 1);
+                setIsSubmitted(false); 
+                setSelectedOption(null); 
+                setTimer(60); 
+            } else {
+                setQuizCompleted(true);
+            }
+        }, 500); 
     }
-  };
+};
 
   const toggleLanguage = () => {
     setTranslateToTamil(!translateToTamil);
@@ -156,11 +189,6 @@ const Quiz = () => {
     setQuizCompleted(false);
     setDifficulty(null); // Reset difficulty selection
     fetchData(); // Reload data
-  };
-
-  const handleDifficultySelection = (level) => {
-    setDifficulty(level);
-    // You can modify fetchData or other quiz settings based on the selected difficulty level
   };
 
   const renderDifficultySelection = () => (
@@ -187,20 +215,23 @@ const Quiz = () => {
     </View>
   );
 
+  
+
   return (
     <View style={styles.container}>
-      {loading ? (
-        <Text style={styles.loadingText}>Loading...</Text>
-      ) : !difficulty ? (
-        renderDifficultySelection()
-      ) : quizCompleted ? (
-        <View style={styles.quizContainer}>
-          <Text style={styles.quizHeader}>Quiz Completed!</Text>
-          <Text style={styles.finalScore}>Final Score: {points}</Text>
-          <Pressable onPress={handleRetry} style={styles.retryButton}>
-            <Text style={styles.retryButtonText}>Retry</Text>
-          </Pressable>
-        </View>
+    {!difficulty ? (
+      renderDifficultySelection()
+    ) :  loading? (
+      <Text style={styles.loadingText}>Loading...</Text>
+    ) : quizCompleted ? (
+      // ... quiz completed rendering
+      <View style={styles.quizContainer}>
+        <Text style={styles.quizHeader}>Quiz Completed!</Text>
+        <Text style={styles.finalScore}>Final Score: {points}</Text>
+        <Pressable onPress={handleRetry} style={styles.retryButton}>
+          <Text style={styles.retryButtonText}>Retry</Text>
+        </Pressable>
+      </View>
       ) : (
         <ScrollView
           contentContainerStyle={styles.scrollViewContent}
@@ -247,9 +278,11 @@ const Quiz = () => {
                 ? `கேள்வி ${currentQuestion}: படத்தில் என்ன உள்ளது?`
                 : questionText}
             </Text>
+            {imageUri && 
             <View style={styles.imageContainer}>
               <Image source={{ uri: imageUri }} style={styles.questionImage} />
             </View>
+            }
             {options.map((option, index) => (
               <Pressable
                 key={index}
@@ -263,7 +296,7 @@ const Quiz = () => {
               </Pressable>
             ))}
             {!isSubmitted && (
-              <Pressable onPress={handleSubmit} style={styles.submitButton}>
+              <Pressable onPress={()=>handleSubmit(false)} style={styles.submitButton} disabled={!selectedOption }>
                 <Text style={styles.submitButtonText}>Submit</Text>
               </Pressable>
             )}
@@ -271,12 +304,21 @@ const Quiz = () => {
         </ScrollView>
       )}
     </View>
+
+    
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  
+  blankPage: {
     flex: 1,
+    backgroundColor: "#fff", // Set background color to white (or any desired color)
+  },
+  container: {
+    display:"flex",
+    height:"100%",
+    flex:1,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 20,
@@ -288,10 +330,9 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   difficultyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+    display:"flex",
+    flexDirection:"column",
+    gap: 8,
   },
   difficultyHeader: {
     fontSize: 28,
@@ -303,15 +344,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#4CAF50",
     width: 150, //change the size of the button
     paddingVertical: 15,
-    paddingHorizontal: 30,
     borderRadius: 10,
-    marginBottom: 15,
-    alignItems: "center", //center the content horizontally
+    width:"2rem",
+    //justifyContent: 'center', // Add this to center text vertically
   },
   difficultyButtonText: {
     fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
+    textAlign: 'center',     // Add this to center text horizontally
   },
   quizContainer: {
     flex: 1,

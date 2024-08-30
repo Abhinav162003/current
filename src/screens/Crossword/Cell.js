@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   nonEditableCell: {
     width: cellSize - 10,
     height: cellSize - 10,
-    backgroundColor: "#d3d3d3",
+    backgroundColor: "#4a4a4a",
   },
 });
 

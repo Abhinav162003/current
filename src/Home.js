@@ -441,8 +441,10 @@ export default function Home() {
                   marginTop: 20,
                   width: "100%",
                   backgroundColor: "#4B639D",
-
                   borderRadius: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingVertical: 10,
                 }}
                 onPress={async () => {
                   const soundObject = new Audio.Sound();
@@ -450,29 +452,31 @@ export default function Home() {
                     await soundObject.loadAsync({
                       uri: selectedItem ? selectedItem.audioPath : "",
                     });
-
                     await soundObject.playAsync();
                   } catch (error) {
                     console.error("Error playing sound:", error);
                   }
                 }}
               >
-                <Text
+                <View
                   style={{
-                    fontSize: 24,
-                    padding: 10,
-                    borderWidth: 2,
-                    borderColor: "white",
-
-                    color: "white",
-                    borderRadius: 10,
-                    textAlign: "center",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
                 >
-                  <Ionicons name="ios-volume-high" size={24} color="white" />
-                  Hear this word
-                </Text>
+                  <Ionicons name="volume-high-sharp" size={24} color="white" />
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      color: "white",
+                      marginLeft: 10,
+                    }}
+                  >
+                    Hear this word
+                  </Text>
+                </View>
               </TouchableOpacity>
+
             </ScrollView>
           </View>
         </Modal>

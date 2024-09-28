@@ -1,5 +1,3 @@
-// CrosswordData.js
-
 const crosswords = [
   {
     id: 1,
@@ -13,27 +11,38 @@ const crosswords = [
       ["", "", "", "", "", "", ""],
     ],
     correctAnswers: [
-      ["A", "P", "P", "L", "E", "", ""],
-      ["", "", "", "", "I", "", ""],
-      ["B", "A", "N", "A", "N", "A", ""],
-      ["", "", "", "", "O", "", ""],
-      ["O", "R", "A", "N", "G", "E"],
-      ["", "", "", "", "E", "", ""],
-      ["G", "R", "A", "P", "E", "", ""],
+      ["B", "E", "N", "D", "", "",""],
+      ["O", "", "", "O", "", "", ""],
+      ["N", "F", "", "", "", "E", ""],
+      ["E", "A", "S", "T", "", "M", ""],
+      ["", "R", "", "", "", "P", ""],
+      ["", "", "", "A", "C", "T", ""],
+      ["", "", "", "B", "O", "Y", ""],
     ],
     hints: {
       across: [
-        "1. A popular fruit (5 letters)",
-        "3. A yellow fruit (6 letters)",
-        "5. A citrus fruit (6 letters)",
-        "7. A small, purple or green fruit (5 letters)",
+        "1. (1.1) To form a curve or cause an object to assume a crooked or angular form (4 letters)",
+        "2. (4.1) The direction towards the point of the horizon where the sun rises (4 letters)",
+        "3. (6.4) To behave in a certain manner (3 letters)",
+        "4. (7.4) Opposite of Girl (5 letters)",
       ],
       down: [
-        "1. A red or green fruit (5 letters)",
-        "2. A type of tropical fruit (6 letters)",
-        "4. Often found in fruit salads (5 letters)",
-        "6. A small, sweet fruit (3 letters)",
+        "5. (1.1) What are the hard parts inside your body called (1 letters)",
+        "6. (1.4) Carry out or perform an action (2 letters)",
+        "7. (3.2) Located at a great distance in time or space or degree (3 letters)",
+        "8. (3.6) To remove the contents (5 letters)",
       ],
+    },
+    audioLinks: {
+      "across-1": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Bend.mp3",
+      "across-2": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/East.mp3",
+      "across-3":"https://aruldayanand.blob.core.windows.net/learn-irula-audio/Act.mp3",
+      "across-4": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Boy.mp3",
+      
+      "down-5": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Bone.mp3",
+      "down-6": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Do.mp3",
+      "down-7": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Far.mp3",
+      "down-8": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Empty.mp3",
     },
   },
   {
@@ -69,6 +78,17 @@ const crosswords = [
         "4. Seventh letter (1 letter)",
         "6. Eighth letter (1 letter)",
       ],
+    },
+    audioLinks: {
+      "across-1": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Bend.mp3",
+      "across-2": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/East.mp3",
+      "across-3":"https://aruldayanand.blob.core.windows.net/learn-irula-audio/Act.mp3",
+      "across-4": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Boy.mp3",
+      
+      "down-5": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Bone.mp3",
+      "down-6": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Do.mp3",
+      "down-7": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Far.mp3",
+      "down-8": "https://aruldayanand.blob.core.windows.net/learn-irula-audio/Empty.mp3",
     },
   },
   // Add more crosswords here

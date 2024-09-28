@@ -55,8 +55,10 @@ const SpeechCheck = () => {
     setRecordings({ ...recordings, [currentRecording.wordId]: uri });
     setCurrentRecording(null);
     // Simulate accuracy calculation
-    setAccuracy({ ...accuracy, [currentRecording.wordId]: "Accuracy: " + Math.floor(Math.random() * 100) + "%" });
-  };
+    const randomAccuracy = Math.floor(Math.random() * 21) + 80; // Generates a random number between 80 and 100
+    setAccuracy({ ...accuracy, [currentRecording.wordId]: "Accuracy: " + randomAccuracy + "%" });
+    };
+  
 
   const playRecording = async (wordId) => {
     const uri = recordings[wordId];

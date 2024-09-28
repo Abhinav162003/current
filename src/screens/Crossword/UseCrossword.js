@@ -1,12 +1,9 @@
-// useCrossword.js
-
 import { useState } from "react";
 
 const useCrossword = (selectedCrossword) => {
   const { grid, correctAnswers } = selectedCrossword;
-
-  // Initialize input state
   const [inputs, setInputs] = useState(grid.map((row) => row.map(() => "")));
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleChange = (row, col, value) => {
     const newInputs = [...inputs];
@@ -29,7 +26,7 @@ const useCrossword = (selectedCrossword) => {
       }
     }
 
-    // Return result
+    setIsCompleted(isCorrect);
     return isCorrect;
   };
 
@@ -37,6 +34,7 @@ const useCrossword = (selectedCrossword) => {
     inputs,
     handleChange,
     handleSubmit,
+    isCompleted,
   };
 };
 

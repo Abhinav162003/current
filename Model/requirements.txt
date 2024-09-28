@@ -1,8 +1,9 @@
 pandas
 requests
-librosa
+# librosa
 pydub
 transformers
 datasets
 torch
 torchaudio
+sounddevice

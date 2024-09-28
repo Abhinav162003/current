@@ -19,5 +19,3 @@ web-build/
 data/
 __pycache__/
 myenv/
-main1.py
-loader1.py

@@ -8,6 +8,7 @@ import torch
 original_wav_dir = 'data/converted_audio/'
 # Directory for augmented files
 augmented_dir = 'data/augmented_audio/'
+# Ensure the augmented audio directory exists
 os.makedirs(augmented_dir, exist_ok=True)
 
 # Function to add background noise
@@ -20,8 +21,9 @@ def pitch_shift(waveform, sample_rate, n_steps=2):
     return T.PitchShift(sample_rate, n_steps=n_steps)(waveform)
 
 # Function to adjust volume
-def adjust_volume(waveform, gain):
-    return T.Vol(gain=gain)(waveform)
+def adjust_volume(waveform, gain_dB):
+    # Adjust gain in decibels (gain_type = 'db')
+    return T.Vol(gain=gain_dB, gain_type='db')(waveform)
 
 # Function to time stretch
 def time_stretch(waveform, rate=1.1):
@@ -57,10 +59,10 @@ for wav_file in os.listdir(original_wav_dir):
 
         # Augmentation 3: Adjust volume
         # Louder
-        louder_waveform = adjust_volume(waveform, gain=3)
+        louder_waveform = adjust_volume(waveform, gain_dB=3)
         torchaudio.save(os.path.join(augmented_dir, f"{wav_file[:-4]}_louder.wav"), louder_waveform, sample_rate)
         # Quieter
-        quieter_waveform = adjust_volume(waveform, gain=-3)
+        quieter_waveform = adjust_volume(waveform, gain_dB=-3)
         torchaudio.save(os.path.join(augmented_dir, f"{wav_file[:-4]}_quieter.wav"), quieter_waveform, sample_rate)
 
         # Augmentation 4: Time stretch
